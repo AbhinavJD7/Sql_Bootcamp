@@ -1,0 +1,431 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test               |
++--------------------+
+5 rows in set (0.03 sec)
+
+mysql> create table department (Department_ID  integer, Department_Name varchar(60));
+ERROR 1046 (3D000): No database selected
+mysql> use test;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables
+    -> ;
++----------------+
+| Tables_in_test |
++----------------+
+| department     |
+| Employee       |
+| Grade          |
+| student        |
+| SwapName       |
++----------------+
+5 rows in set (0.01 sec)
+
+mysql> select * from department;
++---------------+------------------+-------+
+| Department_ID | Department_Name  | Marks |
++---------------+------------------+-------+
+|           112 | Computer Science |    87 |
+|           113 | Mechanical       |    77 |
+|           114 | Electrical       |    85 |
++---------------+------------------+-------+
+3 rows in set (0.01 sec)
+
+mysql> select stddev(Marks) "Deviation" from department;
++-------------------+
+| Deviation         |
++-------------------+
+| 4.320493798938574 |
++-------------------+
+1 row in set (0.01 sec)
+
+mysql> select varience(Marks) "Varience" from department;
+ERROR 1305 (42000): FUNCTION test.varience does not exist
+mysql> select variance(Marks) "Varience" from department;
++--------------------+
+| Varience           |
++--------------------+
+| 18.666666666666668 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> create table Employee ("Emp_no"  number , Emp_name varchar(50) , Salary number , DOJ DD-MON-YY);  
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"Emp_no"  number , Emp_name varchar(50) , Salary number , DOJ DD-MON-YY)' at line 1
+mysql> create table Employee (Emp_no  number , Emp_name varchar(50) , Salary number , DOJ DD-MON-YY); 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number , Emp_name varchar(50) , Salary number , DOJ DD-MON-YY)' at line 1
+mysql> create table Employee (Emp_no  integer , Emp_name varchar(50) , Salary integer , DOJ DD-MON-YY);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DD-MON-YY)' at line 1
+mysql> create table Employee (Emp_no  integer , Emp_name varchar(50) , Salary integer , DOJ Date(DD-MON-YY);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(DD-MON-YY)' at line 1
+mysql> create table Employee (Emp_no  integer , Emp_name varchar(50) , Salary integer , DOJ Date;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create table Employee (Emp_no  integer , Emp_name varchar(50) , Salary integer , DOJ Date);
+ERROR 1050 (42S01): Table 'employee' already exists
+mysql> create table Workers (Worker_no  integer , Worker_name varchar(50) , Salary number , DOJ Date);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number , DOJ Date)' at line 1
+mysql> create table Workers (Worker_no  integer , Worker_name varchar(50) , Salary integer , DOJ Date);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (100 , "Aman" , 500 , 07-JAN-18),(101 , "Anant" , 600 , 06-SEP-19);
+ERROR 1054 (42S22): Unknown column 'JAN' in 'field list'
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (100 , "Aman" , 500 , 07-01-18),(101 , "Anant" , 600 , 06-09-19);
+ERROR 1292 (22007): Incorrect date value: '-12' for column 'DOJ' at row 1
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (100 , "Aman" , 500 , 07-jan-18),(101 , "Anant" , 600 , 06-sep-19);
+ERROR 1054 (42S22): Unknown column 'jan' in 'field list'
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (100 , "Aman" , 500 , 2018-06-22),(101 , "Anant" , 600 , 2019-07-23);
+ERROR 1292 (22007): Incorrect date value: '1990' for column 'DOJ' at row 1
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (100 , "Aman" , 500 , 18-06-22),(101 , "Anant" , 600 , 19-07-23);
+ERROR 1292 (22007): Incorrect date value: '-10' for column 'DOJ' at row 1
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (100 , "Aman" , 500 , '18-06-22'),(101 , "Anant" , 600 , '19-07-23');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
++-----------+-------------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (100 , "Abhinav" , 500 , '18-06-22'),(101 , "Kamran" , 600 , '19-07-23');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       100 | Abhinav     |    500 | 2018-06-22 |
+|       101 | Kamran      |    600 | 2019-07-23 |
++-----------+-------------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> update Worker_no Set = 102 where Worker_name = "Abhinav";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 102 where Worker_name = "Abhinav"' at line 1
+mysql> update Workers  Set Worker_no = 102 where Worker_name = "Abhinav";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Workers  Set Worker_no = 103 where Worker_name = "Kamran";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       102 | Abhinav     |    500 | 2018-06-22 |
+|       103 | Kamran      |    600 | 2019-07-23 |
++-----------+-------------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> update Workers  Set DOJ = 2012-08-21 where Worker_name = "Kamran";
+ERROR 1292 (22007): Incorrect date value: '1983' for column 'DOJ' at row 4
+mysql> update Workers  Set DOJ = "2012-08-21" where Worker_name = "Kamran";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Workers  Set DOJ = "2020-10-18" where Worker_name = "Abhinav";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       102 | Abhinav     |    500 | 2020-10-18 |
+|       103 | Kamran      |    600 | 2012-08-21 |
++-----------+-------------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> update Workers  Set Salary = 400 where Worker_name = "Abhinav";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Workers  Set Salary = 800 where Worker_name = "Kamran";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       102 | Abhinav     |    400 | 2020-10-18 |
+|       103 | Kamran      |    800 | 2012-08-21 |
++-----------+-------------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> Select Salary
+    -> Case
+    -> 
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Case' at line 2
+mysql> Select Worker_name  , Salary , "Desc Order" from Workers order by Salary desc
+    -> ;
++-------------+--------+------------+
+| Worker_name | Salary | Desc Order |
++-------------+--------+------------+
+| Kamran      |    800 | Desc Order |
+| Anant       |    600 | Desc Order |
+| Aman        |    500 | Desc Order |
+| Abhinav     |    400 | Desc Order |
++-------------+--------+------------+
+4 rows in set (0.01 sec)
+
+mysql> Select Worker_name  , Salary  from Workers order by Salary desc
+    -> ;
++-------------+--------+
+| Worker_name | Salary |
++-------------+--------+
+| Kamran      |    800 |
+| Anant       |    600 |
+| Aman        |    500 |
+| Abhinav     |    400 |
++-------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (100 , "Abhinav" , 500 , '18-06-22');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       102 | Abhinav     |    400 | 2020-10-18 |
+|       103 | Kamran      |    800 | 2012-08-21 |
+|       100 | Abhinav     |    500 | 2018-06-22 |
++-----------+-------------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> delete from Workers where Worker_name = "Abhinav" and Worker_no = 100;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       102 | Abhinav     |    400 | 2020-10-18 |
+|       103 | Kamran      |    800 | 2012-08-21 |
++-----------+-------------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (102 , "Abhinav" , 400 , '18-10-20');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       102 | Abhinav     |    400 | 2020-10-18 |
+|       103 | Kamran      |    800 | 2012-08-21 |
+|       102 | Abhinav     |    400 | 2018-10-20 |
++-----------+-------------+--------+------------+
+5 rows in set (0.01 sec)
+
+mysql> delete from Workers where Worker_name = "Abhinav" and Worker_no = 102;
+Query OK, 2 rows affected (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       103 | Kamran      |    800 | 2012-08-21 |
++-----------+-------------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (102 , "Abhinav" , 400 , '18-10-20');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Workers (Worker_no , Worker_name , Salary , DOJ) values (102 , "Abhinav" , 400 , '18-10-20');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       103 | Kamran      |    800 | 2012-08-21 |
+|       102 | Abhinav     |    400 | 2018-10-20 |
+|       102 | Abhinav     |    400 | 2018-10-20 |
++-----------+-------------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> Delete from workers
+    -> where Worker_name = "Abhinav" Not in (
+    -> where Worker_name = "Abhinav" Not in ('
+    '> 
+    '> ;
+    '> 
+    '> ;
+    '> ds;
+    '> ';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where Worker_name = "Abhinav" Not in ('
+
+;
+
+;
+ds;
+'' at line 3
+mysql> delete from Workers
+    -> where (Worker_name) not in (
+    -> select min (Worker_name)
+    -> from Workers
+    -> group by Worker_name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 5
+mysql> delete from Workers where ('Abhinav') not in ( select min ('Abhinav') from Workers group by Worker_name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> delete from Workers where ('Abhinav') not in ( select min ('Abhinav') from Workers group by 'Abhinav';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select max(Salary) from Workers;
++-------------+
+| max(Salary) |
++-------------+
+|         800 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select Worker_name , max(Salary) as Max_Salary from Workers Group by Worker_name;
++-------------+------------+
+| Worker_name | Max_Salary |
++-------------+------------+
+| Aman        |        500 |
+| Anant       |        600 |
+| Kamran      |        800 |
+| Abhinav     |        400 |
++-------------+------------+
+4 rows in set (0.01 sec)
+
+mysql> select max(Salary) from Workers;
++-------------+
+| max(Salary) |
++-------------+
+|         800 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select Worker_name where Salary = max(Salary) from Workers;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from Workers' at line 1
+mysql> select Worker_name
+    -> from Workers
+    -> where Salary = (Select Max(Salary) from Workers);
++-------------+
+| Worker_name |
++-------------+
+| Kamran      |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Worker_name, Salary
+    -> FROM Workers
+    -> ORDER BY Salary DESC
+    -> LIMIT 1;
++-------------+--------+
+| Worker_name | Salary |
++-------------+--------+
+| Kamran      |    800 |
++-------------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT Worker_name, Salary as Max Salary FROM Workers ORDER BY Salary DESC LIMIT 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Salary FROM Workers ORDER BY Salary DESC LIMIT 1' at line 1
+mysql> SELECT Worker_name, Salary as Max_Salary FROM Workers ORDER BY Salary DESC LIMIT 1;
++-------------+------------+
+| Worker_name | Max_Salary |
++-------------+------------+
+| Kamran      |        800 |
++-------------+------------+
+1 row in set (0.00 sec)
+
+mysql> SET @row_number = 0;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> 
+mysql> SELECT 
+    ->     (@row_number:=@row_number + 1) AS row_number,
+    ->     Emp_name,
+    ->     Salary
+    -> FROM Workers
+    -> ORDER BY Salary DESC;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'row_number,
+    Emp_name,
+    Salary
+FROM Workers
+ORDER BY Salary DESC' at line 2
+mysql> SET @row = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> 
+mysql> SELECT 
+    ->     (@row:=@row + 1) AS Position,
+    ->     Worker_name,
+    ->     Salary
+    -> FROM Workers
+    -> ORDER BY Salary DESC;
++----------+-------------+--------+
+| Position | Worker_name | Salary |
++----------+-------------+--------+
+|        1 | Kamran      |    800 |
+|        2 | Anant       |    600 |
+|        3 | Aman        |    500 |
+|        4 | Abhinav     |    400 |
+|        5 | Abhinav     |    400 |
++----------+-------------+--------+
+5 rows in set, 1 warning (0.01 sec)
+
+mysql> SELECT DISTINCT * FROM YourTable;
+ERROR 1146 (42S02): Table 'test.yourtable' doesn't exist
+mysql> SELECT DISTINCT * FROM Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       103 | Kamran      |    800 | 2012-08-21 |
+|       102 | Abhinav     |    400 | 2018-10-20 |
++-----------+-------------+--------+------------+
+4 rows in set (0.01 sec)
+
+mysql> select * from Workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       103 | Kamran      |    800 | 2012-08-21 |
+|       102 | Abhinav     |    400 | 2018-10-20 |
+|       102 | Abhinav     |    400 | 2018-10-20 |
++-----------+-------------+--------+------------+
+5 rows in set (0.01 sec)
+
+mysql> notee;
