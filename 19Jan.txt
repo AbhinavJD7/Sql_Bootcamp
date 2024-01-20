@@ -1,0 +1,62 @@
+mysql> desc Workers;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Worker_no   | int         | YES  |     | NULL    |       |
+| Worker_name | varchar(50) | YES  |     | NULL    |       |
+| Salary      | int         | YES  |     | NULL    |       |
+| DOJ         | date        | YES  |     | NULL    |       |
+| HRA         | double      | YES  |     | NULL    |       |
+| DA          | double      | YES  |     | NULL    |       |
+| Gross       | double      | YES  |     | NULL    |       |
+| Ded         | double      | YES  |     | NULL    |       |
+| Net         | double      | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+9 rows in set (0.01 sec)
+
+mysql> set server output on;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'output on' at line 1
+mysql> ed abc.sql;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ed abc.sql' at line 1
+mysql> delimiter &&
+mysql> delimiter $$
+mysql> create Procedure emp()
+    -> begin
+    ->     select * from Workers where Salary > 500
+    -> end&&
+    -> delimiter;
+    -> ;
+    -> end;
+    -> /
+    -> \
+    -> exit
+    -> ;
+    -> 
+    -> ;
+    -> 
+    -> end
+    -> END;
+    -> DELIMITER;
+    -> $$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'end&&
+delimiter;;
+end;
+/
+
+exit
+;
+
+;
+
+end
+END;
+DELIMITER' at line 4
+mysql> delimiter $$
+mysql> create Procedure emp()
+    -> begin
+    ->   select * from Workers where Salary > 500
+    -> end;
+    -> $$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'end' at line 4
+mysql> Terminal close -- exit!
+Aborted

@@ -1,0 +1,70 @@
+mysql> select * from workers;
++-----------+-------------+--------+------------+
+| Worker_no | Worker_name | Salary | DOJ        |
++-----------+-------------+--------+------------+
+|       100 | Aman        |    500 | 2018-06-22 |
+|       101 | Anant       |    600 | 2019-07-23 |
+|       103 | Kamran      |    800 | 2012-08-21 |
+|       102 | Abhinav     |    400 | 2018-10-20 |
+|       102 | Abhinav     |    400 | 2018-10-20 |
++-----------+-------------+--------+------------+
+5 rows in set (0.06 sec)
+
+mysql> select Worker_name 
+    -> from Workers
+    -> where Salary>(select Worker_name from Workers where Salary = 400);
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select Worker_name  from Workers where Salary>(select Worker_name from Workers where Salary = 500);
++-------------+
+| Worker_name |
++-------------+
+| Aman        |
+| Anant       |
+| Kamran      |
+| Abhinav     |
+| Abhinav     |
++-------------+
+5 rows in set (0.00 sec)
+
+mysql> select Worker_name  from Workers where Salary<(select Worker_name from Workers where Salary = 500);
+Empty set (0.00 sec)
+
+mysql> select Worker_name  from Workers where Salary<(select Worker_name from Workers where Salary = 600);
+Empty set (0.00 sec)
+
+mysql> select Worker_name  from Workers where Salary>(select Worker_name from Workers where Salary = 600);
++-------------+
+| Worker_name |
++-------------+
+| Aman        |
+| Anant       |
+| Kamran      |
+| Abhinav     |
+| Abhinav     |
++-------------+
+5 rows in set (0.01 sec)
+
+mysql> define n = "hello";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'define n = "hello"' at line 1
+mysql> define n = "hello"
+    -> select n;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'define n = "hello"
+select n' at line 1
+mysql> set n = "Hello"
+    -> select n;
+ERROR 1193 (HY000): Unknown system variable 'n'
+mysql> set @n = "Hello" select n;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select n' at line 1
+mysql> SET @my_variable = 'Hello, World!';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT @my_variable;
++---------------+
+| @my_variable  |
++---------------+
+| Hello, World! |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> Terminal close -- exit!
+Aborted
